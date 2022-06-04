@@ -44,4 +44,9 @@ public class CalculatorServiceTest {
         int value2 = 1;
         Assert.assertEquals(1, service.division(value1, value2));
     }
+
+    @Test
+    public void multiplyOperation(){
+
+    }
 }
