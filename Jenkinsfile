@@ -11,8 +11,8 @@ pipeline {
             }
             steps {
                 echo 'Hello World'
-                sh '.\mvnw clean'
-                sh '.\mvnw compile'
+                sh './mvnw clean'
+                sh './mvnw compile'
             }
         }
     }
