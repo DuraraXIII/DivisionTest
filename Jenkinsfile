@@ -11,7 +11,8 @@ pipeline {
             }
             steps {
                 echo 'Hello World'
-                sh 'java --version'
+                sh '.\mvnw clean'
+                sh '.\mvnw compile'
             }
         }
     }
