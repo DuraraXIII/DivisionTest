@@ -57,9 +57,4 @@ public class CalculatorServiceTest {
         //second comment
     }
 
-    @Test
-    public void multiplyOperation3(){
-        //comment test 2
-        //second comment
-    }
 }
