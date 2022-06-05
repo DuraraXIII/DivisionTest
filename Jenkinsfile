@@ -15,5 +15,18 @@ pipeline {
                 sh './mvnw compile'
             }
         }
+        stage('Test') {
+                    agent {
+                        docker {
+                            image 'adoptopenjdk/openjdk15'
+
+                        }
+                    }
+                    steps {
+                        echo 'Test'
+                        sh './mvnw test'
+
+                    }
+                }
     }
 }
