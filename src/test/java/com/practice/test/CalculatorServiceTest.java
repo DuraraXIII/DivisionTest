@@ -50,10 +50,6 @@ public class CalculatorServiceTest {
         //comment test 2
         //second comment
     }
-    @Test
-    public void multiplyOperation2(){
-        //comment test 2
-        //second comment
-    }
+
 
 }
