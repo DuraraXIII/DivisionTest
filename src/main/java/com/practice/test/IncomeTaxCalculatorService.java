@@ -8,6 +8,10 @@ public interface IncomeTaxCalculatorService {
 
     float SH = .30f;
 
+    float ST = .33f;
+
+    float SA = .39f;
+
 
 
 }

@@ -25,6 +25,13 @@ public class IncomeTaxCalculatorServiceImp implements IncomeTaxCalculatorService
         if (income > 48000 && income <= 70000) {
             taxRate = SH;
         }
+        if (income > 70000 && income <= 180000) {
+            taxRate = ST;
+        }
+
+        if (income > 180000) {
+            taxRate = SA;
+        }
 
 
 
