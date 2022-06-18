@@ -61,4 +61,6 @@ public class IncomeTaxCalculationTest {
         float income = 190000f;
         Assert.assertEquals(74100.00f, service.incomeTaxCalculation(income), 2);
     }
+
+
 }

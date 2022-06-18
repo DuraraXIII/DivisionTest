@@ -8,33 +8,38 @@ public class IncomeTaxCalculatorServiceImp implements IncomeTaxCalculatorService
     @Override
     public float incomeTaxCalculation(float income) {
 
-        float taxRate = 0;
+        TaxRates taxRate = retrieveTaxRates(income);
+        return income*taxRate.rate;
+    }
+
+    private TaxRates retrieveTaxRates(float income) {
+        TaxRates taxRate = TaxRates.Default;
 
         if (income <= 14000 && income > 0) {
-            taxRate = SB;
+            taxRate = TaxRates.SB;
 
         }
         if (income < 0) {
-            taxRate = SB;
+            taxRate = TaxRates.SB;
         }
 
         if (income > 14000 && income <= 48000) {
-            taxRate = S;
+            taxRate = TaxRates.S;
         }
 
         if (income > 48000 && income <= 70000) {
-            taxRate = SH;
+            taxRate = TaxRates.SH;
         }
         if (income > 70000 && income <= 180000) {
-            taxRate = ST;
+            taxRate = TaxRates.ST;
         }
 
         if (income > 180000) {
-            taxRate = SA;
+            taxRate = TaxRates.SA;
         }
 
-
-
-        return income * taxRate;
+        return taxRate;
     }
+
+
 }
