@@ -15,11 +15,7 @@ public class IncomeTaxCalculatorServiceImp implements IncomeTaxCalculatorService
     private TaxRates retrieveTaxRates(float income) {
         TaxRates taxRate = TaxRates.Default;
 
-        if (income <= 14000 && income > 0) {
-            taxRate = TaxRates.SB;
-
-        }
-        if (income < 0) {
+        if (income <= 14000) {
             taxRate = TaxRates.SB;
         }
 
