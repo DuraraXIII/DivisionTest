@@ -12,6 +12,18 @@ public class IncomeTaxCalculatorServiceImp implements IncomeTaxCalculatorService
         return income*taxRate.rate;
     }
 
+    @Override
+    public CalculatorTaxResponse incomeTaxCalculation(CalculatorTaxRequest request) {
+        float incomeTax = 0.00f;
+        CalculatorTaxResponse response = new CalculatorTaxResponse();
+        if (request.getBusinessType() == null || request.getBusinessType() == BusinessTypes.SoleTrader.value || request.getBusinessType().isEmpty()){
+
+            incomeTax = incomeTaxCalculation(request.getIncomeAmount());
+        }
+        response.setTaxToPay(incomeTax);
+        return response;
+    }
+
     private TaxRates retrieveTaxRates(float income) {
         TaxRates taxRate = TaxRates.Default;
 
