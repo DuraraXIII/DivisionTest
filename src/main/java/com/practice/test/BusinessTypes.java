@@ -7,7 +7,9 @@ public enum BusinessTypes {
     MaoriAuthorities("MaoriAuthorities"),
     NonProfit("NonProfit"),
     Unincorporated("Unincorporated"),
-    TrustsAndTrustees("TrustsAndTrustees");
+    TrustsAndTrusteesEarned("TrustsAndTrusteesEarned"),
+
+    TrustsAndTrusteesInitial("TrustsAndTrusteesInitial");
 
 
     BusinessTypes(String value) {

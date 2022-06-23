@@ -9,6 +9,7 @@ public class IncomeTaxCalculatorServiceImp implements IncomeTaxCalculatorService
     public float incomeTaxCalculation(float income) {
 
         TaxRates taxRate = retrieveTaxRates(income);
+
         return income*taxRate.rate;
     }
 
@@ -16,10 +17,28 @@ public class IncomeTaxCalculatorServiceImp implements IncomeTaxCalculatorService
     public CalculatorTaxResponse incomeTaxCalculation(CalculatorTaxRequest request) {
         float incomeTax = 0.00f;
         CalculatorTaxResponse response = new CalculatorTaxResponse();
-        if (request.getBusinessType() == null || request.getBusinessType() == BusinessTypes.SoleTrader.value || request.getBusinessType().isEmpty()){
+        if (request.getBusinessType() == null || request.getBusinessType() == BusinessTypes.SoleTrader.value || request.getBusinessType() == BusinessTypes.Unincorporated.value || request.getBusinessType().isEmpty()){
 
             incomeTax = incomeTaxCalculation(request.getIncomeAmount());
         }
+        if (request.getBusinessType() == BusinessTypes.MostCompanies.value || request.getBusinessType() == BusinessTypes.NonProfit.value){
+            incomeTax = request.getIncomeAmount()*.28f;
+
+        }
+        if (request.getBusinessType() == BusinessTypes.MaoriAuthorities.value){
+            incomeTax = request.getIncomeAmount()*.175f;
+
+        }
+
+        if (request.getBusinessType() == BusinessTypes.TrustsAndTrusteesEarned.value){
+            incomeTax = request.getIncomeAmount()*.33f;
+
+        }
+        if (request.getBusinessType() == BusinessTypes.TrustsAndTrusteesInitial.value){
+            incomeTax = request.getIncomeAmount()*0.00f;
+
+        }
+
         response.setTaxToPay(incomeTax);
         return response;
     }
