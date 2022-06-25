@@ -17,35 +17,14 @@ public class IncomeTaxCalculatorServiceImp implements IncomeTaxCalculatorService
     public CalculatorTaxResponse incomeTaxCalculation(CalculatorTaxRequest request) {
         float incomeTax = 0.00f;
         CalculatorTaxResponse response = new CalculatorTaxResponse();
-        if (request.getBusinessType() == null || request.getBusinessType() == BusinessTypes.SoleTrader.value || request.getBusinessType() == BusinessTypes.Unincorporated.value || request.getBusinessType().isEmpty()){
-
+        boolean isIndividual = request.getBusinessType() == null || request.getBusinessType().isEmpty();
+        if (isIndividual == true) {
             incomeTax = incomeTaxCalculation(request.getIncomeAmount());
-        }
-        else if (request.getBusinessType() == BusinessTypes.MostCompanies.value || request.getBusinessType() == BusinessTypes.NonProfit.value){
-            incomeTax = request.getIncomeAmount()*.28f;
-
-        }
-        else if (request.getBusinessType() == BusinessTypes.MaoriAuthorities.value){
-            incomeTax = request.getIncomeAmount()*.175f;
-
-        }
-
-        else if (request.getBusinessType() == BusinessTypes.TrustsAndTrusteesEarned.value){
-            incomeTax = request.getIncomeAmount()*.33f;
-
-        }
-        else if (request.getBusinessType() == BusinessTypes.TrustsAndTrusteesInitial.value){
-            incomeTax = request.getIncomeAmount()*0.00f;
-
+            response.setTaxToPay(incomeTax);
         }
         else {
-            throw new RuntimeException("Invalid BusinessType");
+            response = incomeTaxCalculatorForBusiness(request);
         }
-
-
-
-
-        response.setTaxToPay(incomeTax);
         return response;
     }
 
@@ -74,5 +53,48 @@ public class IncomeTaxCalculatorServiceImp implements IncomeTaxCalculatorService
         return taxRate;
     }
 
+
+    private CalculatorTaxResponse incomeTaxCalculatorForBusiness(CalculatorTaxRequest request) {
+        float incomeTax = 0.00f;
+        CalculatorTaxResponse response = new CalculatorTaxResponse();
+        BusinessTypes businessTypes = getBusinessTypeEnum(request.getBusinessType());
+        if (businessTypes == null){
+            throw new RuntimeException("Invalid BusinessType");
+        }
+        if (businessTypes == BusinessTypes.SoleTrader || businessTypes == BusinessTypes.Unincorporated){
+
+            incomeTax = incomeTaxCalculation(request.getIncomeAmount());
+        }
+        if (businessTypes == BusinessTypes.MostCompanies|| businessTypes == BusinessTypes.NonProfit){
+            incomeTax = request.getIncomeAmount()*.28f;
+
+        }
+        if (businessTypes == BusinessTypes.MaoriAuthorities){
+            incomeTax = request.getIncomeAmount()*.175f;
+
+        }
+
+        if (businessTypes == BusinessTypes.TrustsAndTrusteesEarned){
+            incomeTax = request.getIncomeAmount()*.33f;
+
+        }
+        if (businessTypes == BusinessTypes.TrustsAndTrusteesInitial){
+            incomeTax = request.getIncomeAmount()*0.00f;
+
+
+        }
+
+        response.setTaxToPay(incomeTax);
+        return response;
+    }
+    private BusinessTypes getBusinessTypeEnum(String value) {
+        BusinessTypes businessTypes = null;
+        try {
+            businessTypes = Enum.valueOf(BusinessTypes.class, value);
+        }catch (Exception e){
+
+        }
+        return businessTypes;
+    }
 
 }
