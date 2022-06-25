@@ -139,6 +139,16 @@ public class IncomeTaxCalculationTestWithRequest {
         Assert.assertEquals(0.00f, service.incomeTaxCalculation(income).getTaxToPay(), 2);
     }
 
+    @Test
+    public void incomeTaxCalculatorForBusinessTypeInvalid() {
+        CalculatorTaxRequest income = new CalculatorTaxRequest() {{
+            setIncomeAmount(150000f);
+            setBusinessType("Invalid");
+        }};
+        Exception exception = Assert.assertThrows(RuntimeException.class,()-> service.incomeTaxCalculation(income));
+        Assert.assertEquals("Invalid BusinessType", exception.getMessage());
+    }
+
 
 }
 

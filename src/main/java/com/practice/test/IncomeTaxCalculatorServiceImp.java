@@ -21,23 +21,29 @@ public class IncomeTaxCalculatorServiceImp implements IncomeTaxCalculatorService
 
             incomeTax = incomeTaxCalculation(request.getIncomeAmount());
         }
-        if (request.getBusinessType() == BusinessTypes.MostCompanies.value || request.getBusinessType() == BusinessTypes.NonProfit.value){
+        else if (request.getBusinessType() == BusinessTypes.MostCompanies.value || request.getBusinessType() == BusinessTypes.NonProfit.value){
             incomeTax = request.getIncomeAmount()*.28f;
 
         }
-        if (request.getBusinessType() == BusinessTypes.MaoriAuthorities.value){
+        else if (request.getBusinessType() == BusinessTypes.MaoriAuthorities.value){
             incomeTax = request.getIncomeAmount()*.175f;
 
         }
 
-        if (request.getBusinessType() == BusinessTypes.TrustsAndTrusteesEarned.value){
+        else if (request.getBusinessType() == BusinessTypes.TrustsAndTrusteesEarned.value){
             incomeTax = request.getIncomeAmount()*.33f;
 
         }
-        if (request.getBusinessType() == BusinessTypes.TrustsAndTrusteesInitial.value){
+        else if (request.getBusinessType() == BusinessTypes.TrustsAndTrusteesInitial.value){
             incomeTax = request.getIncomeAmount()*0.00f;
 
         }
+        else {
+            throw new RuntimeException("Invalid BusinessType");
+        }
+
+
+
 
         response.setTaxToPay(incomeTax);
         return response;
