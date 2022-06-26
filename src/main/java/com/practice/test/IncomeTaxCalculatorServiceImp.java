@@ -9,19 +9,18 @@ public class IncomeTaxCalculatorServiceImp implements IncomeTaxCalculatorService
     public float incomeTaxCalculation(float income) {
 
         TaxRates taxRate = retrieveTaxRates(income);
+
         return income*taxRate.rate;
     }
 
+
     @Override
     public CalculatorTaxResponse incomeTaxCalculation(CalculatorTaxRequest request) {
-        float incomeTax = 0.00f;
-        CalculatorTaxResponse response = new CalculatorTaxResponse();
-        if (request.getBusinessType() == null || request.getBusinessType() == BusinessTypes.SoleTrader.value || request.getBusinessType().isEmpty()){
-
-            incomeTax = incomeTaxCalculation(request.getIncomeAmount());
+        boolean isIndividual = request.getBusinessType() == null || request.getBusinessType().isEmpty();
+        if (isIndividual) {
+            return incomeTaxCalculatorForIndividuals(request);
         }
-        response.setTaxToPay(incomeTax);
-        return response;
+            return  incomeTaxCalculatorForBusiness(request);
     }
 
     private TaxRates retrieveTaxRates(float income) {
@@ -49,5 +48,58 @@ public class IncomeTaxCalculatorServiceImp implements IncomeTaxCalculatorService
         return taxRate;
     }
 
+
+    private CalculatorTaxResponse incomeTaxCalculatorForBusiness(CalculatorTaxRequest request) {
+        float incomeTax = 0.00f;
+        CalculatorTaxResponse response = new CalculatorTaxResponse();
+        BusinessTypes businessTypes = getBusinessTypeEnum(request.getBusinessType());
+        if (businessTypes == null){
+            throw new RuntimeException("Invalid BusinessType");
+        }
+        if (businessTypes == BusinessTypes.SoleTrader || businessTypes == BusinessTypes.Unincorporated){
+
+            incomeTax = incomeTaxCalculation(request.getIncomeAmount());
+        }
+        if (businessTypes == BusinessTypes.MostCompanies|| businessTypes == BusinessTypes.NonProfit){
+            incomeTax = request.getIncomeAmount()*.28f;
+
+        }
+        if (businessTypes == BusinessTypes.MaoriAuthorities){
+            incomeTax = request.getIncomeAmount()*.175f;
+
+        }
+
+        if (businessTypes == BusinessTypes.TrustsAndTrusteesEarned){
+            incomeTax = request.getIncomeAmount()*.33f;
+
+        }
+        if (businessTypes == BusinessTypes.TrustsAndTrusteesInitial){
+            incomeTax = request.getIncomeAmount()*0.00f;
+
+        }
+
+        response.setTaxToPay(incomeTax);
+        return response;
+    }
+    private BusinessTypes getBusinessTypeEnum(String value) {
+        BusinessTypes businessTypes = null;
+        try {
+            businessTypes = Enum.valueOf(BusinessTypes.class, value);
+        }catch (Exception e){
+
+        }
+        return businessTypes;
+    }
+
+
+    private CalculatorTaxResponse incomeTaxCalculatorForIndividuals(CalculatorTaxRequest request) {
+        float incomeTax = 0.00f;
+        CalculatorTaxResponse response = new CalculatorTaxResponse();
+
+            incomeTax = incomeTaxCalculation(request.getIncomeAmount());
+            response.setTaxToPay(incomeTax);
+
+        return response;
+    }
 
 }
