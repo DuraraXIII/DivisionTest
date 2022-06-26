@@ -13,19 +13,14 @@ public class IncomeTaxCalculatorServiceImp implements IncomeTaxCalculatorService
         return income*taxRate.rate;
     }
 
+
     @Override
     public CalculatorTaxResponse incomeTaxCalculation(CalculatorTaxRequest request) {
-        float incomeTax = 0.00f;
-        CalculatorTaxResponse response = new CalculatorTaxResponse();
         boolean isIndividual = request.getBusinessType() == null || request.getBusinessType().isEmpty();
-        if (isIndividual == true) {
-            incomeTax = incomeTaxCalculation(request.getIncomeAmount());
-            response.setTaxToPay(incomeTax);
+        if (isIndividual) {
+            return incomeTaxCalculatorForIndividuals(request);
         }
-        else {
-            response = incomeTaxCalculatorForBusiness(request);
-        }
-        return response;
+            return  incomeTaxCalculatorForBusiness(request);
     }
 
     private TaxRates retrieveTaxRates(float income) {
@@ -81,7 +76,6 @@ public class IncomeTaxCalculatorServiceImp implements IncomeTaxCalculatorService
         if (businessTypes == BusinessTypes.TrustsAndTrusteesInitial){
             incomeTax = request.getIncomeAmount()*0.00f;
 
-
         }
 
         response.setTaxToPay(incomeTax);
@@ -95,6 +89,17 @@ public class IncomeTaxCalculatorServiceImp implements IncomeTaxCalculatorService
 
         }
         return businessTypes;
+    }
+
+
+    private CalculatorTaxResponse incomeTaxCalculatorForIndividuals(CalculatorTaxRequest request) {
+        float incomeTax = 0.00f;
+        CalculatorTaxResponse response = new CalculatorTaxResponse();
+
+            incomeTax = incomeTaxCalculation(request.getIncomeAmount());
+            response.setTaxToPay(incomeTax);
+
+        return response;
     }
 
 }
