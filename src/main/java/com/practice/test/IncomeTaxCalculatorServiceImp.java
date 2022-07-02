@@ -7,9 +7,7 @@ public class IncomeTaxCalculatorServiceImp implements IncomeTaxCalculatorService
 
     @Override
     public float incomeTaxCalculation(float income) {
-
         TaxRates taxRate = retrieveTaxRates(income);
-
         return income*taxRate.rate;
     }
 
