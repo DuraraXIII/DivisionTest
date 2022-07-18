@@ -1,5 +1,7 @@
 package com.practice.test;
 
+import java.util.List;
+
 public class CalculatorTaxRequest {
 
     private float incomeAmount;
@@ -31,4 +33,25 @@ public class CalculatorTaxRequest {
     private boolean isNZResident;
     private String businessType;
 
+    public List<Income> getIncomes() {
+        return incomes;
+    }
+
+    public void setIncomes(List<Income> incomes) {
+        this.incomes = incomes;
+    }
+
+    private List <Income> incomes;
+
+
+    public List<Expenses> getExpenses() {
+        return expenses;
+    }
+
+    public void setExpenses(List<Expenses> expenses) {
+        this.expenses = expenses;
+    }
+
+    private List <Expenses> expenses;
 }
+
